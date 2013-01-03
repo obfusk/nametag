@@ -48,17 +48,21 @@ op.parse! ARGV
 # --
 
 options[:cfgfile] = rc if !options[:cfgfile] and exists[rc]
-load options[:cfgfile] if options[:cfgfile]
+load options[:cfgfile] if options[:cfgfile]                     # TODO
 
 # --
 
-ARGV.each do |filename|
+ARGV.each do |filename|                                         # {{{1
   fn    = File.realpath filename
   info  = NameTag.parse fn
 
-  puts "#{ fn }:\n  { #{ show[info] } }" if options[:verbose]
+  f     = ->(x) { x.tr '_|', ' /' }                             # TODO
 
-  # NameTag.process fn, info unless options[:noact]
-end
+  info_ = Hash[info.map { |k,v| [k,f[v]] }]
+
+  puts "#{ fn }:\n  { #{ show[info_] } }" if options[:verbose]
+
+  # NameTag.process fn, info_ unless options[:noact]            # TODO
+end                                                             # }}}1
 
 # vim: set tw=70 sw=2 sts=2 et fdm=marker :
