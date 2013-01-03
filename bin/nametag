@@ -5,10 +5,14 @@ require 'optparse'
 
 # --
 
+exists  = ->(x) { File.exists? x or File.symlink? x }
+show    = ->(x) { x.keys.sort.map { |k| "#{k}: #{x[k]}" } .join ', ' }
+
+# --
+
 info    = 'nametag - set audio file tags based on file name'
 usage   = 'nametag [<option(s)>]'
 rc      = "#{ Dir.home }/.nametagrc"
-exists  = ->(x) { File.exists? x or File.symlink? x }
 options = { cfgfile: nil, verbose: false, noact: false }
 
 # --
@@ -52,7 +56,7 @@ ARGV.each do |filename|
   fn    = File.realpath filename
   info  = NameTag.parse fn
 
-  puts "#{ fn } | #{ info }" if options[:verbose]
+  puts "#{ fn }:\n  { #{ show[info] } }" if options[:verbose]
 
   # NameTag.process fn, info unless options[:noact]
 end
