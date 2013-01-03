@@ -1,0 +1,60 @@
+#!/usr/bin/env ruby
+
+require 'nametag'
+require 'optparse'
+
+# --
+
+info    = 'nametag - set audio file tags based on file name'
+usage   = 'nametag [<option(s)>]'
+rc      = "#{ Dir.home }/.nametagrc"
+exists  = ->(x) { File.exists? x or File.symlink? x }
+options = { cfgfile: nil, verbose: false, noact: false }
+
+# --
+
+op = OptionParser.new do |opts|                                 # {{{1
+  opts.banner = usage
+
+  opts.on('-c', '--config-file FILE', 'Configuration file') do |x|
+    options[:cfgfile] = x
+  end
+
+  opts.on('-v', '--[no-]verbose', 'Run verbosely') do |x|
+    options[:verbose] = x
+  end
+
+  opts.on('-n', '--no-act', 'Do not modify files') do |x|
+    options[:noact] = !x
+  end
+
+  opts.on_tail('-h', '--help', 'Show this message') do
+    puts info, '', opts
+    exit
+  end
+
+  opts.on_tail('--version', 'Show version') do
+    puts "nametag v#{NameTag::VERSION}"
+    exit
+  end
+end                                                             # }}}1
+
+op.parse! ARGV
+
+# --
+
+options[:cfgfile] = rc if !options[:cfgfile] and exists[rc]
+load options[:cfgfile] if options[:cfgfile]
+
+# --
+
+ARGV.each do |filename|
+  fn    = File.realname filename
+  info  = NameTag.parse fn
+
+  puts "#{ fn } | #{ info }" if options[:verbose]
+
+  # NameTag.process fn, info unless options[:noact]
+end
+
+# vim: set tw=70 sw=2 sts=2 et fdm=marker :
