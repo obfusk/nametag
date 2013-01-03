@@ -49,7 +49,7 @@ load options[:cfgfile] if options[:cfgfile]
 # --
 
 ARGV.each do |filename|
-  fn    = File.realname filename
+  fn    = File.realpath filename
   info  = NameTag.parse fn
 
   puts "#{ fn } | #{ info }" if options[:verbose]

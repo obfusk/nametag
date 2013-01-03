@@ -46,7 +46,7 @@ module NameTag
   #   with keys :artist, :album, :track, :title, :ext;
   #   optionally: :album_n, :year; if a match is found
   def self.parse (filename, opts = {})
-    m = (opts[:regexes] or [RX]).first_map { |rx| rx.match filename }
+    m = first_map(opts[:regexes] || [RX]) { |rx| rx.match filename }
     m ? Hash[m.names.map { |x| [x.to_sym, m[x]] }] : nil
   end
 
