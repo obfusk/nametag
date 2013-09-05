@@ -28,10 +28,19 @@
 ## Usage
 []: {{{1
 
-    $ nametag .../Between_the_Buried_and_Me/04-Colors_(2007)/05-Ants_of_the_Sky.mp3
+    $ nametag -h
+    nametag - set audio file tags based on file name
 
-    $ nametag -v ...  # verbose
-    $ nametag -n ...  # no-act
+    nametag [<option(s)>]
+        -c, --config-file FILE           Configuration file
+        -v, --verbose                    Run verbosely
+        -n, --no-act                     Do not modify files
+        -h, --help                       Show this message
+            --version                    Show version
+
+    $ nametag -v ".../Between_the_Buried_and_Me/04-Colors_(2007)/05-Ants_of_the_Sky.mp3"
+    /.../Between_the_Buried_and_Me/04-Colors_(2007)/05-Ants_of_the_Sky.mp3:
+      artist="Between the Buried and Me" album="Colors" track="05" title="Ants of the Sky" ext="mp3" album_n="04" year="2007"
 
 []: }}}1
 

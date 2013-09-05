@@ -42,11 +42,9 @@ cf    = options[:cfgfile] || (File.exists?(rc) ? rc : nil)
 
 load cf if cf
 
-puts opts.inspect, options.inspect; exit
-
 ARGV.each do |f|                                                # {{{1
   fn    = File.realpath f
-  info  = NameTag.parse fn, opts
+  info  = NameTag.parse(fn, opts) or raise "parse failed for: #{f}"
   info_ = NameTag.process info, opts
 
   if v > 0
