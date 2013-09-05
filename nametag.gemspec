@@ -6,6 +6,8 @@ Gem::Specification.new do |s|
   s.summary     = 'set audio file tags based on file name'
 
   s.description = <<-END.gsub(/^ {4}/, '')
+    set audio file tags based on file name
+
     ...
   END
 
@@ -15,13 +17,17 @@ Gem::Specification.new do |s|
   s.authors     = [ 'Felix C. Stegerman' ]
   s.email       = %w{ flx@obfusk.net }
 
-  s.license     = 'GPLv2'
+  s.licenses    = %w{ GPLv2 }
 
   s.executables = %w{ nametag }
-  s.files       = %w{ .yardopts README.md bin/nametag
-                      nametag.gemspec } + Dir['lib/**/*.rb']
+  s.files       = %w{ .yardopts README.md Rakefile bin/nametag } \
+                + %w{ nametag.gemspec } \
+                + Dir['{lib,spec}/**/*.rb']
 
   s.add_runtime_dependency 'taglib-ruby'
+
+  s.add_development_dependency 'rake'
+  s.add_development_dependency 'rspec'
 
   s.required_ruby_version = '>= 1.9.1'
 end

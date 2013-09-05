@@ -1,68 +1,61 @@
-#!/usr/bin/env ruby
+#!/usr/bin/ruby -w
 
 require 'nametag'
 require 'optparse'
 
-# --
-
-exists  = ->(x) { File.exists? x or File.symlink? x }
-show    = ->(x) { x.keys.sort.map { |k| "#{k}: #{x[k]}" } .join ', ' }
-
-# --
-
 info    = 'nametag - set audio file tags based on file name'
 usage   = 'nametag [<option(s)>]'
 rc      = "#{ Dir.home }/.nametagrc"
-options = { cfgfile: nil, verbose: false, noact: false }
+options = { cfgfile: nil, verbose: 0, noact: false }
 
-# --
-
-op = OptionParser.new do |opts|                                 # {{{1
-  opts.banner = usage
-
-  opts.on('-c', '--config-file FILE', 'Configuration file') do |x|
+op = OptionParser.new(usage) do |o|                             # {{{1
+  o.on('-c', '--config-file FILE', 'Configuration file') do |x|
     options[:cfgfile] = x
   end
 
-  opts.on('-v', '--[no-]verbose', 'Run verbosely') do |x|
-    options[:verbose] = x
+  o.on('-v', '--verbose', 'Run verbosely') do |x|
+    options[:verbose] += 1
   end
 
-  opts.on('-n', '--no-act', 'Do not modify files') do |x|
+  o.on('-n', '--no-act', 'Do not modify files') do |x|
     options[:noact] = !x
   end
 
-  opts.on_tail('-h', '--help', 'Show this message') do
-    puts info, '', opts
-    exit
+  o.on_tail('-h', '--help', 'Show this message') do
+    puts info, '', o; exit
   end
 
-  opts.on_tail('--version', 'Show version') do
-    puts "nametag v#{NameTag::VERSION}"
-    exit
+  o.on_tail('--version', 'Show version') do
+    puts "nametag version #{NameTag::VERSION}"; exit
   end
 end                                                             # }}}1
 
-op.parse! ARGV
+begin
+  op.parse! ARGV
+rescue OptionParser::ParseError => e
+  $stderr.puts "Error: #{e}"; exit 1
+end
 
-# --
+opts  = NameTag::DEFAULTS
+v     = options[:verbose]
+cf    = options[:cfgfile] || (File.exists?(rc) ? rc : nil)
 
-options[:cfgfile] = rc if !options[:cfgfile] and exists[rc]
-load options[:cfgfile] if options[:cfgfile]                     # TODO
+load cf if cf
 
-# --
+puts opts.inspect, options.inspect; exit
 
-ARGV.each do |filename|                                         # {{{1
-  fn    = File.realpath filename
-  info  = NameTag.parse fn
+ARGV.each do |f|                                                # {{{1
+  fn    = File.realpath f
+  info  = NameTag.parse fn, opts
+  info_ = NameTag.process info, opts
 
-  f     = ->(x) { x.tr '_|', ' /' }                             # TODO
+  if v > 0
+    puts "#{fn}:"
+    puts(v > 1 ? "  - #{info}\n  + #{info_}" : "  #{info_}")
+    puts
+  end
 
-  info_ = Hash[info.map { |k,v| [k,f[v]] }]
-
-  puts "#{ fn }:\n  { #{ show[info_] } }" if options[:verbose]
-
-  # NameTag.process fn, info_ unless options[:noact]            # TODO
+  NameTag.tag fn, info_ unless options[:noact]
 end                                                             # }}}1
 
 # vim: set tw=70 sw=2 sts=2 et fdm=marker :

@@ -2,5 +2,5 @@
 *.swp
 
 /*.gem
-/.yardoc/
-/doc/
+/.yardoc
+/doc

@@ -1,61 +1,98 @@
-<!-- \{{{1 -->
+[]: {{{1
 
-    File        : README
+    File        : README.md
     Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-    Date        : 2013-01-03
+    Date        : 2013-09-05
 
     Copyright   : Copyright (C) 2013  Felix C. Stegerman
-    Version     : v0.0.1.dev
+    Version     : v0.0.1.SNAPSHOT
 
-<!-- }}}1 -->
+[]: }}}1
 
 ## Description
-<!-- \{{{1 -->
+[]: {{{1
 
   nametag - set audio file tags based on file name
 
-  ...
+  nametag uses regular expressions to parse paths of audio files and
+  then sets the file tags based on the parsed data.  This allows you
+  to keep paths and tags in sync by creating the tags from the paths.
 
-<!-- }}}1 -->
+  Everything is configurable: the path regexes, the character
+  substitution, and the handling of special cases.  For example, the
+  abum `if_then_else` by The Gathering should not have its underscores
+  interpreted as spaces.
+
+[]: }}}1
 
 ## Usage
-<!-- \{{{1 -->
+[]: {{{1
 
-    $ ...
+    $ nametag .../Between_the_Buried_and_Me/04-Colors_(2007)/05-Ants_of_the_Sky.mp3
 
-<!-- }}}1 -->
+    $ nametag -v ...  # verbose
+    $ nametag -n ...  # no-act
 
-## Installing
-<!-- \{{{1 -->
-
-  ... libtag1-dev ...
-
-    $ gem install nametag             # rubygems
-
-  Get it at https://github.com/obfusk/nametag.  Depends: ...
-
-<!-- }}}1 -->
+[]: }}}1
 
 ## Configuration
-<!-- \{{{1 -->
+[]: {{{1
 
-...
+`~/.nametagrc`
 
-<!-- }}}1 -->
+```ruby
+NameTag.configure do |c|
+  c.regexes << %r{ ... }
+  c.tr['~'] = '_'
+  c.process do |info, opts, tr|
+    if info.artist == 'The_Gathering' && info.album == 'if_then_else'
+      info.map_values { |k,v| k == :album ? v : tr[v] }
+    end
+    # when nothing is returned, the default processing will be used
+  end
+end
+```
+
+[]: }}}1
+
+## Installing
+[]: {{{1
+
+    $ sudo aptitude install libtag1-dev
+    $ gem install nametag
+
+[]: }}}1
+
+## Specs & Docs
+[]: {{{1
+
+    $ rake spec   # TODO
+    $ rake docs
+
+[]: }}}1
+
+## TODO
+[]: {{{1
+
+  * specs?
+  * more specs/docs?
+  * ...
+
+[]: }}}1
 
 ## License
-<!-- \{{{1 -->
+[]: {{{1
 
   GPLv2 [1].
 
-<!-- }}}1 -->
+[]: }}}1
 
 ## References
-<!-- \{{{1 -->
+[]: {{{1
 
   [1] GNU General Public License, version 2
   --- http://www.opensource.org/licenses/GPL-2.0
 
-<!-- }}}1 -->
+[]: }}}1
 
-<!-- vim: set tw=70 sw=2 sts=2 et fdm=marker : -->
+[]: ! ( vim: set tw=70 sw=2 sts=2 et fdm=marker : )
