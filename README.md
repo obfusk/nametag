@@ -47,7 +47,9 @@
 ## Configuration
 []: {{{1
 
-`~/.nametagrc`
+See `nametag.rb` for the default regex and substitution.
+
+`~/.nametagrc`:
 
 ```ruby
 NameTag.configure do |c|
