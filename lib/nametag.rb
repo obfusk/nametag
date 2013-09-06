@@ -2,7 +2,7 @@
 #
 # File        : nametag.rb
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2013-09-05
+# Date        : 2013-09-06
 #
 # Copyright   : Copyright (C) 2013  Felix C. Stegerman
 # Licence     : GPLv2
@@ -79,7 +79,7 @@ module NameTag
   # configure nametag by changing DEFAULTS, which is passed to the
   # block
   def self.configure(c = DEFAULTS, &b)
-    b[c]
+    b[c]; c
   end
 
   # --

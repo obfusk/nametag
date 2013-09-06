@@ -2,7 +2,7 @@
 
     File        : README.md
     Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-    Date        : 2013-09-05
+    Date        : 2013-09-06
 
     Copyright   : Copyright (C) 2013  Felix C. Stegerman
     Version     : v0.0.1.SNAPSHOT
@@ -77,7 +77,7 @@ end
 ## Specs & Docs
 []: {{{1
 
-    $ rake spec   # TODO
+    $ rake spec
     $ rake docs
 
 []: }}}1
@@ -85,7 +85,8 @@ end
 ## TODO
 []: {{{1
 
-  * specs?
+  * test config: regexes, tr
+  * (use cucumber to) test tag writing/behaviour?
   * more specs/docs?
   * ...
 
