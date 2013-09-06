@@ -5,9 +5,11 @@
     Date        : 2013-09-06
 
     Copyright   : Copyright (C) 2013  Felix C. Stegerman
-    Version     : v0.0.1.SNAPSHOT
+    Version     : v0.2.0
 
 []: }}}1
+
+[![Gem Version](https://badge.fury.io/rb/nametag.png)](http://badge.fury.io/rb/nametag)
 
 ## Description
 []: {{{1

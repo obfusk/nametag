@@ -22,7 +22,7 @@ module NameTag
         / (?: (?<album_n> [0-9]+ ) - )?
           (?<album> [^/]*? )
           (?: _\( (?<year> \d{4} ) \) )?
-        / (?<track> [0-9]+ ) - (?<title> [^/]* )
+        / (?<track> [0-9]+ ) (?: - (?<title> [^/]* ) )?
           \. (?<ext> mp3 | ogg | flac )
         \z }x                                                   # }}}1
 
@@ -33,7 +33,7 @@ module NameTag
 
   # substitute characters
   TR_F = ->(o) { ->(x) {
-    o.tr.reduce(x) { |a,y;k,v| k, v = y; a.tr k, v }
+    x && o.tr.reduce(x) { |a,y;k,v| k, v = y; a.tr k, v }
   } }
 
   # tr all values
@@ -111,7 +111,7 @@ module NameTag
       tag.artist  = info[:artist]
       tag.album   = info[:album]
       tag.track   = info[:track].to_i
-      tag.title   = info[:title]
+      tag.title   = info[:title] || "[track #{info[:track]}]"
       tag.year    = info[:year].to_i
       file.save
     end
