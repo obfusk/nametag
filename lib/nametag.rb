@@ -32,7 +32,9 @@ module NameTag
   # --
 
   # substitute characters
-  TR_F = ->(o) { ->(x) { x.tr(o.tr.keys*'', o.tr.values*'') } }
+  TR_F = ->(o) { ->(x) {
+    o.tr.reduce(x) { |a,y;k,v| k, v = y; a.tr k, v }
+  } }
 
   # tr all values
   PROCESS = ->(i, o, f) { i.map { |k,v| [k, f[v]] } }
